@@ -5,7 +5,7 @@ import {MatIcon, MatIconModule} from '@angular/material/icon';
 import {RouterOutlet, Routes} from '@angular/router';
 import {MatIconButton} from '@angular/material/button';
 import {SideMenuComponent} from '../side-menu/side-menu.component';
-import {HomePageComponent} from '../../pages/home-page/home-page.component';
+
 
 @Component({
   selector: 'app-layout',
@@ -26,6 +26,7 @@ export class LayoutComponent
 {
   static routes: Routes = [
     { path: 'home', loadComponent : () => import('../../pages/home-page/home-page.component').then(m => m.HomePageComponent),},
+    {path : 'my-gifts', loadComponent : () => import('../../pages/my-gifts-page/my-gifts-page.component').then(m => m.MyGiftsPageComponent),},
     { path: '**', redirectTo: 'home' },
 
   ]
