@@ -1,11 +1,13 @@
 import { Routes } from '@angular/router';
-import {HomePageComponent} from './giftTech/pages/home-page/home-page.component';
+import {LayoutComponent} from './giftTech/components/layout/layout.component';
 
 export const routes: Routes = [
   {
-    path: 'home',
+    path: '',
     loadComponent : () => import('./giftTech/components/layout/layout.component').then(m => m.LayoutComponent),
+    children: LayoutComponent.routes
   },
+
   {
     path: '**',
     redirectTo: 'home',
