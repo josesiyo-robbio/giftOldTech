@@ -27,6 +27,8 @@
               }
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/cyan-orange.css",
+              "src/tokens.scss",
               "src/styles.css"
             ],
             "scripts": []
@@ -85,6 +87,7 @@
               }
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/cyan-orange.css",
               "src/styles.css"
             ],
             "scripts": []
