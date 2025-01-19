@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
-  MatCard,
   MatCardActions,
   MatCardContent,
   MatCardHeader,
@@ -8,6 +7,9 @@ import {
   MatCardModule
 } from '@angular/material/card';
 import {MatButton} from '@angular/material/button';
+import {Subscription} from 'rxjs';
+import {PeopleGiftService} from '../../services/peopleGift.service';
+import {ProductGift} from '../../interfaces/product-gift';
 
 @Component({
   selector: 'giftTech-home-page',
@@ -22,7 +24,7 @@ import {MatButton} from '@angular/material/button';
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'
 })
-export class HomePageComponent
+export class HomePageComponent implements OnInit, OnDestroy
 {
   cards = [
     {
@@ -62,5 +64,46 @@ export class HomePageComponent
       description: 'The Beagle is a small to medium-sized breed of dog that is friendly and curious.',
     }
   ];
+
+  //CLASS PROPERTIES
+  private peopleGiftSubscription = new Subscription();
+  public peopleGifts : ProductGift[] = [];
+
+  //CONSTRUCTOR
+  constructor(private peopleGiftService: PeopleGiftService)
+  {
+    this.peopleGiftSubscription = new Subscription();
+  }
+
+  ngOnInit(): void
+  {
+    this.peopleGiftSubscription = this.peopleGiftService.getProducts().subscribe(
+      (data) => {
+        if (data && Array.isArray(data))
+        {
+          this.peopleGifts = data;
+        }
+        else
+        {
+          console.warn('No se encontraron productos válidos.');
+          this.peopleGifts = [];
+        }
+      },
+      (error) => {
+        console.error('Error al cargar productos:', error);
+        this.peopleGifts = [];
+      }
+    )
+  }
+
+
+  ngOnDestroy(): void
+  {
+    if (this.peopleGiftSubscription)
+    {
+      this.peopleGiftSubscription.unsubscribe();
+    }
+  }
+
 
 }

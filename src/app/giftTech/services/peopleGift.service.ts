@@ -105,17 +105,17 @@ export class PeopleGiftService
   //METHODS
   private loadProducts()
   {
-    const storedProducts = localStorage.getItem('products');
+    const storedProducts = localStorage.getItem('peopleGifts');
     if(!storedProducts)
     {
-      localStorage.setItem('products', JSON.stringify([this.gifts]));
+      localStorage.setItem('peopleGifts', JSON.stringify([this.gifts]));
     }
   }
 
 
   public getProducts(): Observable<ProductGift[]>
   {
-    const storedProducts = localStorage.getItem('products');
+    const storedProducts = localStorage.getItem('peopleGifts');
     try
     {
       const parsedProducts = storedProducts ? JSON.parse(storedProducts) : [];
