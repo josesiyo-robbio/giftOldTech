@@ -1,0 +1,26 @@
+<mat-drawer-container class="layout-container" hasBackdrop>
+
+  <mat-drawer #drawer mode="push" [opened]="false" [style.width.px]="250">
+    <giftTech-side-menu></giftTech-side-menu>
+  </mat-drawer>
+
+  <mat-drawer-content class="drawer-content">
+    <mat-toolbar color="primary">
+      <button mat-icon-button (click)="drawer.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="header-text">Universal Second Hand Store</span>
+    </mat-toolbar>
+
+    <div class="main-content">
+      <router-outlet></router-outlet>
+    </div>
+
+    <mat-toolbar color="primary" class="footer">
+      <div class="footer-text">
+        <span>JGRB Portfolio Project - 2025</span>
+      </div>
+
+    </mat-toolbar>
+  </mat-drawer-content>
+</mat-drawer-container>
