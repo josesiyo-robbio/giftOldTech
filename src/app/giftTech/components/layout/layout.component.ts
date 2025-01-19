@@ -27,6 +27,7 @@ export class LayoutComponent
   static routes: Routes = [
     { path: 'home', loadComponent : () => import('../../pages/home-page/home-page.component').then(m => m.HomePageComponent),},
     {path : 'my-gifts', loadComponent : () => import('../../pages/my-gifts-page/my-gifts-page.component').then(m => m.MyGiftsPageComponent),},
+    {path : 'my-profile', loadComponent : () =>import('../../pages/my-profile-page/my-profile-page.component').then(m => m.MyProfilePageComponent),},
     { path: '**', redirectTo: 'home' },
 
   ]
