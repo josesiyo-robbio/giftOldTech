@@ -21,6 +21,7 @@ import {PeopleGiftService} from '../../services/peopleGift.service';
 import {Router} from '@angular/router';
 import {MessageDialogComponent} from '../../../shared/message-dialog/message-dialog.component';
 import {GiftAnimationComponent} from '../../components/gift-animation/gift-animation.component';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-request-gift-page',
@@ -40,7 +41,8 @@ import {GiftAnimationComponent} from '../../components/gift-animation/gift-anima
     MatProgressSpinner,
     MatSelect,
     GiftAnimationComponent,
-    MatCardSubtitle
+    MatCardSubtitle,
+    MatPaginator
   ],
   templateUrl: './request-gift-page.component.html',
   styleUrl: './request-gift-page.component.css'
@@ -56,7 +58,14 @@ export class RequestGiftPageComponent implements OnInit, OnDestroy
    Here, you can manage your requests and track the products you're interested in. If a request is
     accepted, you'll be able to take the device and give it a new life.`;
 
-    /*public peopleGifts : ProductGift[] = [];*/
+
+  public pageSize: number = 5;
+  public pageSizeOptions: number[] = [5, 10, 20];
+  currentPage: number = 0;
+  public totalItems: number =0;
+
+
+  /*public peopleGifts : ProductGift[] = [];*/
   peopleGifts = signal<ProductGift[]>([]);
 
   /*selectedCategory : string = '';*/
@@ -85,9 +94,12 @@ export class RequestGiftPageComponent implements OnInit, OnDestroy
     this.isLoading.set(true);
     this.peopleGiftSubscription = this.peopleGiftService.getProducts().subscribe({
       next: (data) => {
-        if (data && Array.isArray(data)) {
+        if (data && Array.isArray(data))
+        {
           this.peopleGifts.set(data);
-        } else {
+          this.totalItems = data.length;
+        }
+        else {
           console.warn('No se encontraron productos válidos.');
           this.peopleGifts.set([]);
         }
@@ -167,5 +179,17 @@ export class RequestGiftPageComponent implements OnInit, OnDestroy
     });
   }
 
+
+
+  onPageChange(event: PageEvent) {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
+  }
+
+  get paginatedGifts(): ProductGift[] {
+    const filtered = this.filteredGifts();  // Filtramos primero
+    const start = this.currentPage * this.pageSize;
+    return filtered.slice(start, start + this.pageSize);  // Después aplicamos la paginación
+  }
 
 }

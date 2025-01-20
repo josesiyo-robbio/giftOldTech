@@ -23,7 +23,7 @@
     {
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4  animate__animated animate__lightSpeedInRight" >
         @if (filteredGifts().length) {
-          @for (gift of filteredGifts(); track gift.id) {
+          @for (gift of paginatedGifts; track gift.id) {
             <mat-card class="example-card flex flex-col justify-between" appearance="outlined">
               <mat-card-header>
                 <div mat-card-avatar class="example-header-image"></div>
@@ -52,6 +52,10 @@
           <p>No items available.</p>
         }
       </div>
+
+      <div class="box pb-3"></div>
+      <mat-paginator [length]="filteredGifts().length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="onPageChange($event)">
+      </mat-paginator>
     }
   }
   @error
