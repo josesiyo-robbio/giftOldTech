@@ -17,7 +17,15 @@
 
       </mat-card-content>
       <mat-card-actions>
-        <button mat-raised-button class="p-1"  (click)="toInboxRequest(gift)">Inbox Request</button>
+        @if (gift.given)
+        {
+          <mat-chip>Claimed</mat-chip>
+        }
+        @else
+        {
+          <button mat-raised-button class="p-1"  (click)="toInboxRequest(gift)">Inbox Request</button>
+        }
+
       </mat-card-actions>
     </mat-card>
   }

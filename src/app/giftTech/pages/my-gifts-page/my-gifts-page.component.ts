@@ -13,6 +13,7 @@ import {
 import {MatButton} from '@angular/material/button';
 import {Router} from '@angular/router';
 import {MyGiftStateService} from '../../services/my-gift-state.service';
+import {MatChip} from '@angular/material/chips';
 
 @Component({
   selector: 'giftTech-my-gifts-page',
@@ -25,7 +26,8 @@ import {MyGiftStateService} from '../../services/my-gift-state.service';
     MatCardImage,
     MatCardTitle,
     MatCardSubtitle,
-    MatButton
+    MatButton,
+    MatChip
   ],
   templateUrl: './my-gifts-page.component.html',
   styleUrl: './my-gifts-page.component.css'

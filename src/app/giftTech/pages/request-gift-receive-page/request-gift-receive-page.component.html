@@ -15,7 +15,7 @@
               <p class="text-sm text-gray-600">{{person.phone}}</p>
             </div>
             <div class="flex gap-4">
-              <button mat-flat-button class="px-4 py-2">Accept</button>
+              <button mat-flat-button class="px-4 py-2" (click)="givenProduct(gift!.id)">Accept</button>
               <button class="px-4 py-2" mat-stroked-button (click)="rejectPerson(person.id)">Reject</button>
             </div>
           </div>
@@ -26,20 +26,21 @@
   </div>
 
   <div class="w-full md:w-1/2">
-    <mat-card class="example-card" appearance="outlined">
+    <mat-card class="example-card flex flex-col justify-between" appearance="outlined">
       <mat-card-header>
         <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Device Name</mat-card-title>
+        <mat-card-title>{{ gift?.name }}</mat-card-title>
+        <mat-card-subtitle>
+          <p class="custom-text">Condition: {{ gift?.condition }}</p>
+        </mat-card-subtitle>
       </mat-card-header>
-      <p>Category: category</p>
-      <p>Condition: condition</p>
-      <img mat-card-image src="device-image-url.jpg" alt="Photo of device">
+
+      <img mat-card-image [src]="gift?.image" alt="Photo of {{ gift?.name }}">
       <mat-card-content>
-        <p>Description of the device</p>
+        <p class="custom-text">{{ gift?.description }}</p>
+
       </mat-card-content>
-      <mat-card-actions>
-        <!-- Actions here -->
-      </mat-card-actions>
+
     </mat-card>
   </div>
 </div>
