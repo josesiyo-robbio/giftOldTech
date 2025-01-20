@@ -168,7 +168,7 @@ export class HomePageComponent implements OnInit, OnDestroy
           message: 'The request has been submitted, please stay tuned for the response.',
           onOk: () =>
           {
-            this.router.navigate(['/my-profile']);
+            this.router.navigate(['/requests']);
           }
         },
       });
