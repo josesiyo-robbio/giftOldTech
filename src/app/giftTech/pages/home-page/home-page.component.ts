@@ -22,6 +22,9 @@ import {LoadingDialogComponent} from '../../../shared/loading-dialog/loading-dia
 import {Router} from '@angular/router';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {MatChip} from '@angular/material/chips';
+import {GiftAnimationComponent} from '../../components/gift-animation/gift-animation.component';
+import {AnimationOptions, LottieComponent} from 'ngx-lottie';
+import {AnimationItem} from 'lottie-web';
 
 @Component({
   selector: 'giftTech-home-page',
@@ -40,7 +43,9 @@ import {MatChip} from '@angular/material/chips';
     MatExpansionPanelActionRow,
     MatIcon,
     MatProgressSpinner,
-    MatChip
+    MatChip,
+    GiftAnimationComponent,
+    LottieComponent
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'
@@ -77,6 +82,8 @@ export class HomePageComponent implements OnInit, OnDestroy
   }
 
   //CONSTRUCTOR
+
+
   constructor(private peopleGiftService: PeopleGiftService, private router: Router)
   {
     this.peopleGiftSubscription = new Subscription();
