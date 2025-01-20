@@ -1,1 +1,47 @@
-<p>request-gift-page works!</p>
+<div class="max-w-7xl mx-auto px-4">
+
+
+
+  @defer {
+    @if (isLoading()) {
+      <div class="text-center">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+        <p>Loading gifts...</p>
+      </div>
+    } @else {
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+        @if (filteredGifts().length) {
+          @for (gift of filteredGifts(); track gift.id) {
+            <mat-card class="example-card" appearance="outlined">
+              <mat-card-header>
+                <div mat-card-avatar class="example-header-image"></div>
+                <mat-card-title>{{ gift.name }}</mat-card-title>
+              </mat-card-header>
+              <p>Category: {{ gift.category }}</p>
+              <p>Condition: {{ gift.condition }}</p>
+              <img mat-card-image [src]="gift.image" alt="Photo of {{ gift.name }}">
+              <mat-card-content>
+                <p>{{ gift.description }}</p>
+              </mat-card-content>
+              <mat-card-actions>
+                @if (gift.claimed) {
+                  <mat-chip>Request has been sent.</mat-chip>
+
+                } @else {
+                  <button mat-stroked-button (click)="claimGift(gift.id)">Claim</button>
+                }
+
+              </mat-card-actions>
+            </mat-card>
+          }
+        } @else {
+          <p>No items available.</p>
+        }
+      </div>
+    }
+  } @error {
+    <div class="text-center">
+      <p>Error loading gifts. Please try again later.</p>
+    </div>
+  }
+</div>
