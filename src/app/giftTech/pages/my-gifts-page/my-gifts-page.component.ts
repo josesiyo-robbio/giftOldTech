@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {ProductGift} from '../../interfaces/product-gift';
 import {MyGiftsService} from '../../services/my-gifts.service';
@@ -14,6 +14,7 @@ import {MatButton} from '@angular/material/button';
 import {Router} from '@angular/router';
 import {MyGiftStateService} from '../../services/my-gift-state.service';
 import {MatChip} from '@angular/material/chips';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'giftTech-my-gifts-page',
@@ -27,12 +28,13 @@ import {MatChip} from '@angular/material/chips';
     MatCardTitle,
     MatCardSubtitle,
     MatButton,
-    MatChip
+    MatChip,
+    MatPaginator
   ],
   templateUrl: './my-gifts-page.component.html',
   styleUrl: './my-gifts-page.component.css'
 })
-export class MyGiftsPageComponent
+export class MyGiftsPageComponent implements OnInit, OnDestroy
 {
   //CLASS PROPERTIES
   private myGiftSubscription = new Subscription();
@@ -40,9 +42,16 @@ export class MyGiftsPageComponent
   public  pageToolTip : string = `Here you can see all the devices you've made available for gifting.
    In this section, you can manage your listings, review the products you've uploaded,
     and see who is interested in them. If you have more devices to share,
-     you can easily add them to your list and help others give them a second life.`
+     you can easily add them to your list and help others give them a second life.`;
 
-    //CONSTRUCTOR
+
+  public pageSize: number = 5
+  public pageSizeOptions: number[] = [5, 10, 20];
+  currentPage: number = 0;
+
+
+  //CONSTRUCTOR
+  public totalItems: number =0;
   constructor(
     private myGiftsService: MyGiftsService,
     private myGiftStateService: MyGiftStateService,
@@ -60,6 +69,8 @@ export class MyGiftsPageComponent
         if (data && Array.isArray(data))
         {
           this.myGifts = data;
+          this.totalItems = data.length;
+          console.log(this.totalItems);
         }
         else
         {
@@ -89,7 +100,16 @@ export class MyGiftsPageComponent
     this.myGiftStateService.setGift(gift);
     this.router.navigate(['/inbox-request']);
 
-
-
   }
+
+  onPageChange(event: PageEvent) {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
+  }
+
+  get paginatedGifts(): ProductGift[] {
+    const start = this.currentPage * this.pageSize;  // Calcula el índice inicial de la página
+    return this.myGifts.slice(start, start + this.pageSize);  // Aplica la paginación sobre el array completo
+  }
+
 }

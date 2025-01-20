@@ -25,6 +25,7 @@ import {MatChip} from '@angular/material/chips';
 import {GiftAnimationComponent} from '../../components/gift-animation/gift-animation.component';
 import {AnimationOptions, LottieComponent} from 'ngx-lottie';
 import {AnimationItem} from 'lottie-web';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'giftTech-home-page',
@@ -45,7 +46,8 @@ import {AnimationItem} from 'lottie-web';
     MatProgressSpinner,
     MatChip,
     GiftAnimationComponent,
-    LottieComponent
+    LottieComponent,
+    MatPaginator
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'
@@ -61,6 +63,12 @@ export class HomePageComponent implements OnInit, OnDestroy
   public dialog :MatDialog = inject(MatDialog);
   private dialogRef         :   MatDialogRef<LoadingDialogComponent, any> | undefined;
   isLoading = signal<boolean>(true);
+  public pageSize: number = 6; // Define the number of cards per page
+  public pageIndex: number = 0; // Current page index
+  public pageSizeOptions: number[] = [5, 10, 20];
+  currentPage: number = 0;
+
+
 
   /*public peopleGifts : ProductGift[] = [];*/
   peopleGifts = signal<ProductGift[]>([]);
@@ -178,6 +186,14 @@ export class HomePageComponent implements OnInit, OnDestroy
     });
   }
 
+  onPageChange(event: PageEvent) {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
+  }
 
-
+  get paginatedGifts(): ProductGift[] {
+    const filtered = this.filteredGifts();  // Filtramos primero
+    const start = this.currentPage * this.pageSize;
+    return filtered.slice(start, start + this.pageSize);  // Después aplicamos la paginación
+  }
 }
