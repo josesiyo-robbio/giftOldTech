@@ -8,6 +8,7 @@ import {
   MatCardImage, MatCardTitle
 } from '@angular/material/card';
 import {Person} from '../../interfaces/person';
+import {MatButton} from '@angular/material/button';
 
 @Component({
   selector: 'app-request-gift-receive-page',
@@ -18,7 +19,8 @@ import {Person} from '../../interfaces/person';
     MatCardContent,
     MatCardHeader,
     MatCardImage,
-    MatCardTitle
+    MatCardTitle,
+    MatButton
   ],
   templateUrl: './request-gift-receive-page.component.html',
   styleUrl: './request-gift-receive-page.component.css'
@@ -39,18 +41,22 @@ export class RequestGiftReceivePageComponent
     },
     {
       id :  2,
-      name : 'sophina richards',
+      name : 'Alejandra richards',
       image : 'https://randomuser.me/api/portraits/women/25.jpg',
       phone : '0123456789'
     },
     {
       id :  3,
-      name : 'sophina richards',
+      name : 'Maria richards',
       image : 'https://randomuser.me/api/portraits/women/31.jpg',
       phone : '0123456789'
     }
   ];
 
+
+  rejectPerson(id: number): void {
+    this.persons = this.persons.filter(person => person.id !== id);
+  }
 
 
 }
