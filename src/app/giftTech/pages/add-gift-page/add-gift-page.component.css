@@ -24,6 +24,10 @@ mat-card-actions
   align-items     : center;
 }
 
+.custom-text
+{
+  text-align: justify;
+}
 
 
 @media (max-width: 768px)

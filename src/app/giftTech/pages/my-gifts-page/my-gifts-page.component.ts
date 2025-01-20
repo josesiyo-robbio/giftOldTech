@@ -37,8 +37,12 @@ export class MyGiftsPageComponent
   //CLASS PROPERTIES
   private myGiftSubscription = new Subscription();
   public myGifts : ProductGift[] = [];
+  public  pageToolTip : string = `Here you can see all the devices you've made available for gifting.
+   In this section, you can manage your listings, review the products you've uploaded,
+    and see who is interested in them. If you have more devices to share,
+     you can easily add them to your list and help others give them a second life.`
 
-  //CONSTRUCTOR
+    //CONSTRUCTOR
   constructor(
     private myGiftsService: MyGiftsService,
     private myGiftStateService: MyGiftStateService,

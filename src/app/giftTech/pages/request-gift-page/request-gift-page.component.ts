@@ -52,8 +52,11 @@ export class RequestGiftPageComponent implements OnInit, OnDestroy
   public dialog :MatDialog = inject(MatDialog);
   private dialogRef         :   MatDialogRef<LoadingDialogComponent, any> | undefined;
   isLoading = signal<boolean>(true);
+  public  pageToolTip : string = `On this page, you can see the requests you've sent to receive devices.
+   Here, you can manage your requests and track the products you're interested in. If a request is
+    accepted, you'll be able to take the device and give it a new life.`;
 
-  /*public peopleGifts : ProductGift[] = [];*/
+    /*public peopleGifts : ProductGift[] = [];*/
   peopleGifts = signal<ProductGift[]>([]);
 
   /*selectedCategory : string = '';*/

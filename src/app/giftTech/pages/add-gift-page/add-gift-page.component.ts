@@ -31,7 +31,11 @@ import {MessageDialogComponent} from '../../../shared/message-dialog/message-dia
 export class AddGiftPageComponent
 {
   //CLASS PROPERTIES
-  giftForm: FormGroup;
+  public  pageToolTip : string = `On this page, you can add a device you'd like to gift.
+   Simply fill out the form with the product details, such as its name, description,
+    condition, and category. Once you submit the form, your device will be available
+     for others to take and give it a second life.`;
+    giftForm: FormGroup;
   selectedCategory : string = '';
   categories: Category[] = Object.values(Category);
 
