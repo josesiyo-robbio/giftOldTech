@@ -5,8 +5,10 @@ export interface ProductGift
   image       :   string;
   description :   string;
   given       :   boolean;
+  claimed     :   boolean;
   category    :   Category;
   condition   :   Condition;
+
 }
 
 

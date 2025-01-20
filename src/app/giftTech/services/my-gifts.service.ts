@@ -18,9 +18,11 @@ export class MyGiftsService
       visuals with no scratches or dead pixels. The console has been well taken care of, showing only minimal
       signs of use. Includes the original charger and a protective case. Perfect for gaming on the go, whether
       you're a fan of RPGs, action games, or indie hits.`,
-        given : false,
+
         category : Category.Videogames,
-        condition : Condition.LikeNew
+        condition : Condition.LikeNew,
+        claimed: false,
+        given : false
       },
       {
         id: '2',
@@ -30,9 +32,10 @@ export class MyGiftsService
       and delivers a stunning gaming experience. Joy-cons are fully functional with no drift issues.
       This console has been gently used and comes with the original box, dock, and power adapter.
       Perfect for both handheld and docked gaming sessions.`,
-        given : false,
         category : Category.Videogames,
-        condition : Condition.Broken
+        condition : Condition.Broken,
+        claimed: false,
+        given : false
       }
   ];
 

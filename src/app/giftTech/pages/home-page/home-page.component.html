@@ -33,7 +33,13 @@
                 <p>{{ gift.description }}</p>
               </mat-card-content>
               <mat-card-actions>
-                <button mat-stroked-button (click)="claimGift()">Claim</button>
+                @if (gift.claimed) {
+                  <mat-chip>Request has been sent.</mat-chip>
+
+                } @else {
+                  <button mat-stroked-button (click)="claimGift(gift.id)">Claim</button>
+                }
+
               </mat-card-actions>
             </mat-card>
           }

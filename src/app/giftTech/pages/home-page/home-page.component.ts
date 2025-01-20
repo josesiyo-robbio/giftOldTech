@@ -21,6 +21,7 @@ import {MessageDialogComponent} from '../../../shared/message-dialog/message-dia
 import {LoadingDialogComponent} from '../../../shared/loading-dialog/loading-dialog.component';
 import {Router} from '@angular/router';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
+import {MatChip} from '@angular/material/chips';
 
 @Component({
   selector: 'giftTech-home-page',
@@ -38,7 +39,8 @@ import {MatProgressSpinner} from '@angular/material/progress-spinner';
     MatFormField,
     MatExpansionPanelActionRow,
     MatIcon,
-    MatProgressSpinner
+    MatProgressSpinner,
+    MatChip
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'
@@ -110,7 +112,7 @@ export class HomePageComponent implements OnInit, OnDestroy
   }
 
 
-  claimGift()
+  claimGift(id : string)
   {
     this.dialog.open(MessageDialogComponent,
       {
@@ -119,15 +121,23 @@ export class HomePageComponent implements OnInit, OnDestroy
           message: 'Are you sure you want to submit a request to claim the gift?',
           onOk: () =>
           {
-            this.openDialog();
+            this.openDialog(id);
           }
         },
       });
   }
 
 
-  public openDialog()
+  public openDialog(gifttId: string)
   {
+    const newState: boolean = true;
+    const gifts  = JSON.parse(localStorage.getItem('peopleGifts') || '[]');
+    const gift : ProductGift = gifts.flat().find((p: { id: string; }) => p.id === gifttId);
+    if (gift)
+    {
+      gift.claimed = newState;
+      localStorage.setItem('peopleGifts', JSON.stringify(gifts));
+    }
     this.dialogRef = this.dialog.open(LoadingDialogComponent,
       {
         data: {

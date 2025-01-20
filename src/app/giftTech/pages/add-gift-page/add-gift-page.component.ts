@@ -87,6 +87,7 @@ export class AddGiftPageComponent
         given       :   false,
         category    :   this.giftForm.value.category,
         condition   :   this.giftForm.value.condition,
+        claimed     :   false,
       };
 
     gifts.push(newProduct);

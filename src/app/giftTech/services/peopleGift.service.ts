@@ -19,6 +19,7 @@ export class PeopleGiftService
       signs of use. Includes the original charger and a protective case. Perfect for gaming on the go, whether
       you're a fan of RPGs, action games, or indie hits.`,
       given : false,
+      claimed : false,
       category : Category.Videogames,
       condition : Condition.LikeNew
     },
@@ -31,6 +32,7 @@ export class PeopleGiftService
       This console has been gently used and comes with the original box, dock, and power adapter.
       Perfect for both handheld and docked gaming sessions.`,
       given : false,
+      claimed : false,
       category : Category.Videogames,
       condition : Condition.Broken
     },
@@ -43,6 +45,7 @@ export class PeopleGiftService
       Includes the original charger and a protective pouch. A perfect addition to any gaming collection,
       especially for fans of classic PlayStation titles.`,
       given : false,
+      claimed : false,
       category : Category.Videogames,
       condition : Condition.Refurbished
 
@@ -56,6 +59,7 @@ export class PeopleGiftService
       including detachable controllers and packaging. Whether you're gaming at home or on the move,
       this device offers an exceptional experience.`,
       given : false,
+      claimed : false,
       category : Category.Videogames,
       condition : Condition.New
 
@@ -69,6 +73,7 @@ export class PeopleGiftService
       Includes the original power adapter and a sturdy carrying case for added protection.
       Ideal for anyone looking to enjoy their Steam library or other PC games in a portable format.`,
       given : false,
+      claimed : false,
       category : Category.Audio,
       condition : Condition.Broken
 
@@ -82,6 +87,7 @@ export class PeopleGiftService
       The screen is bright and responsive, and the hinges are firm. Includes a charger, stylus, and a few pre-installed
       classic games. A great choice for anyone looking to relive the nostalgia of Nintendo’s 3D gaming era.`,
       given : false,
+      claimed : false,
       category : Category.Videogames,
       condition : Condition.LikeNew
     },
