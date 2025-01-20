@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {MatCard, MatCardContent, MatCardHeader} from '@angular/material/card';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatFormField, MatFormFieldModule} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
 import {MatButton} from '@angular/material/button';
-import {MatDialogRef} from '@angular/material/dialog';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {Category, Condition, ProductGift} from '../../interfaces/product-gift';
 import {MatOption, MatSelect} from '@angular/material/select';
+import {LoadingDialogComponent} from '../../../shared/loading-dialog/loading-dialog.component';
+import {MessageDialogComponent} from '../../../shared/message-dialog/message-dialog.component';
 
 @Component({
   selector: 'giftTech-add-gift-page',
@@ -35,9 +37,8 @@ export class AddGiftPageComponent
 
   selectedCondition: string = '';
   conditions: Condition[] = Object.values(Condition);
-
-/*  private dialogRef: MatDialogRef<LoadingDialogComponent, any> | undefined;*/
-/*  public dialog :MatDialog = inject(MatDialog);*/
+  private dialogRef: MatDialogRef<LoadingDialogComponent, any> | undefined;
+  public dialog :MatDialog = inject(MatDialog);
 
 
 
@@ -94,14 +95,15 @@ export class AddGiftPageComponent
 
     this.giftForm.reset();
 
-/*    this.dialogRef = this.dialog.open(MessageDialogComponent,
+  this.dialogRef = this.dialog.open(MessageDialogComponent,
       {
         data: {
           title: 'Success',
           message: 'The product has been created successfully',
           onOk: () => this.router.navigate(['']),
         },
-      });*/
+      });
+
   }
 
 
