@@ -9,7 +9,11 @@ import {
 import {MatButton} from '@angular/material/button';
 import {Subscription} from 'rxjs';
 import {PeopleGiftService} from '../../services/peopleGift.service';
-import {ProductGift} from '../../interfaces/product-gift';
+import {Category, ProductGift} from '../../interfaces/product-gift';
+import {MatFormField, MatLabel} from '@angular/material/form-field';
+import {MatOption} from '@angular/material/core';
+import {MatSelect} from '@angular/material/select';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @Component({
   selector: 'giftTech-home-page',
@@ -19,7 +23,12 @@ import {ProductGift} from '../../interfaces/product-gift';
     MatCardImage,
     MatCardContent,
     MatCardActions,
-    MatButton
+    MatButton,
+    MatLabel,
+    MatOption,
+    MatSelect,
+    ReactiveFormsModule,
+    MatFormField
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'
@@ -30,6 +39,9 @@ export class HomePageComponent implements OnInit, OnDestroy
   //CLASS PROPERTIES
   private peopleGiftSubscription = new Subscription();
   public peopleGifts : ProductGift[] = [];
+
+  selectedCategory : string = '';
+  categories: Category[] = Object.values(Category);
 
   //CONSTRUCTOR
   constructor(private peopleGiftService: PeopleGiftService)

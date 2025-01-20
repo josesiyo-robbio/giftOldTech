@@ -1,29 +1,37 @@
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-  @for ( gift of peopleGifts; track gift.id)
-  {
-    <mat-card class="example-card" appearance="outlined">
-      <mat-card-header>
+<div class="max-w-7xl mx-auto px-4">
 
-        <div mat-card-avatar class="example-header-image"></div>
+  <div class="filters ">
+    <mat-form-field>
+    <mat-label class="font-bold">Category</mat-label>
+    <mat-select formControlName="category" class="w-full">
+      <mat-option>None</mat-option>
+      @for (category of categories; track category)
+      {
+        <mat-option [value]="category">{{ category }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  </div>
 
-        <mat-card-title>{{ gift.name }}</mat-card-title>
-      </mat-card-header>
-      <p>Category: {{ gift.category }}</p>
-      <p>Condition: {{ gift.condition }}</p>
-      <img mat-card-image [src]="gift.image" alt="Photo of {{ gift.name }}">
-      <mat-card-content>
-        <p>{{ gift.description }}</p>
-
-      </mat-card-content>
-      <mat-card-actions>
-
-      </mat-card-actions>
-    </mat-card>
-  }
-  @empty
-  {
-    <p>No items available.</p>
-  }
-
-
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+    @for ( gift of peopleGifts; track gift.id)
+    {
+      <mat-card class="example-card" appearance="outlined">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>{{ gift.name }}</mat-card-title>
+        </mat-card-header>
+        <p>Category: {{ gift.category }}</p>
+        <p>Condition: {{ gift.condition }}</p>
+        <img mat-card-image [src]="gift.image" alt="Photo of {{ gift.name }}">
+        <mat-card-content>
+          <p>{{ gift.description }}</p>
+        </mat-card-content>
+      </mat-card>
+    }
+    @empty
+    {
+      <p>No items available.</p>
+    }
+  </div>
 </div>
