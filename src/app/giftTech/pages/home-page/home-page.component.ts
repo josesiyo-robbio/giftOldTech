@@ -20,6 +20,7 @@ import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {MessageDialogComponent} from '../../../shared/message-dialog/message-dialog.component';
 import {LoadingDialogComponent} from '../../../shared/loading-dialog/loading-dialog.component';
 import {Router} from '@angular/router';
+import {MatProgressSpinner} from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'giftTech-home-page',
@@ -36,7 +37,8 @@ import {Router} from '@angular/router';
     ReactiveFormsModule,
     MatFormField,
     MatExpansionPanelActionRow,
-    MatIcon
+    MatIcon,
+    MatProgressSpinner
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'
@@ -48,6 +50,7 @@ export class HomePageComponent implements OnInit, OnDestroy
   private peopleGiftSubscription = new Subscription();
   public dialog :MatDialog = inject(MatDialog);
   private dialogRef         :   MatDialogRef<LoadingDialogComponent, any> | undefined;
+  isLoading = signal<boolean>(true);
 
   /*public peopleGifts : ProductGift[] = [];*/
   peopleGifts = signal<ProductGift[]>([]);
@@ -78,21 +81,23 @@ export class HomePageComponent implements OnInit, OnDestroy
   }
 
   ngOnInit(): void {
-    this.peopleGiftSubscription = this.peopleGiftService.getProducts().subscribe(
-      (data) => {
-        if (data && Array.isArray(data))
-        {
+    this.isLoading.set(true);
+    this.peopleGiftSubscription = this.peopleGiftService.getProducts().subscribe({
+      next: (data) => {
+        if (data && Array.isArray(data)) {
           this.peopleGifts.set(data);
         } else {
           console.warn('No se encontraron productos válidos.');
           this.peopleGifts.set([]);
         }
+        this.isLoading.set(false);
       },
-      (error) => {
+      error: (error) => {
         console.error('Error al cargar productos:', error);
         this.peopleGifts.set([]);
+        this.isLoading.set(false);
       }
-    );
+    });
   }
 
 

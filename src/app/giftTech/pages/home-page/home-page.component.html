@@ -1,40 +1,50 @@
 <div class="max-w-7xl mx-auto px-4">
-
   <div class="filters mb-4 w-full max-w-md mx-auto">
     <mat-form-field class="w-full">
       <mat-label class="font-bold">Category</mat-label>
       <mat-select (selectionChange)="updateCategory($event.value)" class="w-full">
         <mat-option value="None">None</mat-option>
-        @for (category of categories; track category)
-        {
+        @for (category of categories; track category) {
           <mat-option [value]="category">{{ category }}</mat-option>
         }
       </mat-select>
     </mat-form-field>
   </div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-    @for (gift of filteredGifts(); track gift.id)
-    {
-      <mat-card class="example-card" appearance="outlined">
-        <mat-card-header>
-          <div mat-card-avatar class="example-header-image"></div>
-          <mat-card-title>{{ gift.name }}</mat-card-title>
-        </mat-card-header>
-        <p>Category: {{ gift.category }}</p>
-        <p>Condition: {{ gift.condition }}</p>
-        <img mat-card-image [src]="gift.image" alt="Photo of {{ gift.name }}">
-        <mat-card-content>
-          <p>{{ gift.description }}</p>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-stroked-button (click)="claimGift()">Claim</button>
-        </mat-card-actions>
-      </mat-card>
+  @defer {
+    @if (isLoading()) {
+      <div class="text-center">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+        <p>Loading gifts...</p>
+      </div>
+    } @else {
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+        @if (filteredGifts().length) {
+          @for (gift of filteredGifts(); track gift.id) {
+            <mat-card class="example-card" appearance="outlined">
+              <mat-card-header>
+                <div mat-card-avatar class="example-header-image"></div>
+                <mat-card-title>{{ gift.name }}</mat-card-title>
+              </mat-card-header>
+              <p>Category: {{ gift.category }}</p>
+              <p>Condition: {{ gift.condition }}</p>
+              <img mat-card-image [src]="gift.image" alt="Photo of {{ gift.name }}">
+              <mat-card-content>
+                <p>{{ gift.description }}</p>
+              </mat-card-content>
+              <mat-card-actions>
+                <button mat-stroked-button (click)="claimGift()">Claim</button>
+              </mat-card-actions>
+            </mat-card>
+          }
+        } @else {
+          <p>No items available.</p>
+        }
+      </div>
     }
-    @empty
-    {
-      <p>No items available.</p>
-    }
-  </div>
+  } @error {
+    <div class="text-center">
+      <p>Error loading gifts. Please try again later.</p>
+    </div>
+  }
 </div>

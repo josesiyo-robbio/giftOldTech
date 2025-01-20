@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Category, Condition, ProductGift} from '../interfaces/product-gift';
-import {Observable, of} from 'rxjs';
+import {delay, Observable, of} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -113,18 +113,16 @@ export class PeopleGiftService
   }
 
 
-  public getProducts(): Observable<ProductGift[]>
-  {
+  public getProducts(): Observable<ProductGift[]> {
     const storedProducts = localStorage.getItem('peopleGifts');
-    try
-    {
+    try {
       const parsedProducts = storedProducts ? JSON.parse(storedProducts) : [];
-      return of(Array.isArray(parsedProducts[0]) ? parsedProducts[0] : parsedProducts);
-    }
-    catch (error)
-    {
+      return of(Array.isArray(parsedProducts[0]) ? parsedProducts[0] : parsedProducts).pipe(
+        delay(2000) // Retraso de 3 segundos
+      );
+    } catch (error) {
       console.error('Error al parsear los productos desde localStorage:', error);
-      return of([]);
+      return of([]).pipe(delay(2000)); // Simula un retraso también en caso de error
     }
   }
 
