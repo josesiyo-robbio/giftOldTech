@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
   MatCard,
   MatCardActions,
@@ -9,6 +9,10 @@ import {
 } from '@angular/material/card';
 import {Person} from '../../interfaces/person';
 import {MatButton} from '@angular/material/button';
+import {MyGiftsService} from '../../services/my-gifts.service';
+import {ProductGift} from '../../interfaces/product-gift';
+import {Router} from '@angular/router';
+import {MyGiftStateService} from '../../services/my-gift-state.service';
 
 @Component({
   selector: 'app-request-gift-receive-page',
@@ -25,7 +29,7 @@ import {MatButton} from '@angular/material/button';
   templateUrl: './request-gift-receive-page.component.html',
   styleUrl: './request-gift-receive-page.component.css'
 })
-export class RequestGiftReceivePageComponent
+export class RequestGiftReceivePageComponent implements OnInit
 {
   giftRequest = {
     name: 'John Doe',
@@ -54,8 +58,22 @@ export class RequestGiftReceivePageComponent
   ];
 
 
+  public  gift           :   ProductGift | null = null;
+
+  constructor(private router: Router, private myGiftStateService: MyGiftStateService ) { }
+
+
   rejectPerson(id: number): void {
     this.persons = this.persons.filter(person => person.id !== id);
+  }
+
+  ngOnInit(): void
+  {
+    this.gift = this.myGiftStateService.getGift();
+    if(!this.gift){
+      this.router.navigate(['']);
+    }
+    console.log(this.myGiftStateService.getGift());
   }
 
 

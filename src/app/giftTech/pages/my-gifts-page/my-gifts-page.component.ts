@@ -12,6 +12,7 @@ import {
 } from '@angular/material/card';
 import {MatButton} from '@angular/material/button';
 import {Router} from '@angular/router';
+import {MyGiftStateService} from '../../services/my-gift-state.service';
 
 @Component({
   selector: 'giftTech-my-gifts-page',
@@ -38,6 +39,7 @@ export class MyGiftsPageComponent
   //CONSTRUCTOR
   constructor(
     private myGiftsService: MyGiftsService,
+    private myGiftStateService: MyGiftStateService,
     private router: Router
   )
   {
@@ -78,7 +80,7 @@ export class MyGiftsPageComponent
 
   toInboxRequest(gift : ProductGift) :void
   {
-    this.myGiftsService.setProducts(gift);
+    this.myGiftStateService.setGift(gift);
     this.router.navigate(['/inbox-request']);
 
 

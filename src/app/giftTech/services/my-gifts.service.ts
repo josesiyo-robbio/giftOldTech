@@ -64,10 +64,7 @@ export class MyGiftsService
   }
 
 
-  setProducts(products: ProductGift): void
-  {
-    this.selectedGift = products;
-  }
+
 
   public getProducts(): Observable<ProductGift[]>
   {
