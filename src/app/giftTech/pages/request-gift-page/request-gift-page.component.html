@@ -2,26 +2,33 @@
 
 
 
-  @defer {
-    @if (isLoading()) {
-      <div class="text-center">
-        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-        <p>Loading gifts...</p>
+  @defer
+  {
+    @if (isLoading())
+    {
+      <div class="flex items-center justify-center ">
+        <div class="text-center">
+          <giftTech-gift-animation></giftTech-gift-animation>
+        </div>
       </div>
-    } @else {
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+    }
+    @else
+    {
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4  animate__animated animate__lightSpeedInRight" >
         @if (filteredGifts().length) {
           @for (gift of filteredGifts(); track gift.id) {
-            <mat-card class="example-card" appearance="outlined">
+            <mat-card class="example-card flex flex-col justify-between" appearance="outlined">
               <mat-card-header>
                 <div mat-card-avatar class="example-header-image"></div>
                 <mat-card-title>{{ gift.name }}</mat-card-title>
+                <mat-card-subtitle>
+                  <p class="custom-text">Condition: {{ gift.condition }}</p>
+                </mat-card-subtitle>
               </mat-card-header>
-              <p>Category: {{ gift.category }}</p>
-              <p>Condition: {{ gift.condition }}</p>
+
               <img mat-card-image [src]="gift.image" alt="Photo of {{ gift.name }}">
               <mat-card-content>
-                <p>{{ gift.description }}</p>
+                <p class="custom-text">{{ gift.description }}</p>
               </mat-card-content>
               <mat-card-actions>
                 @if (gift.claimed) {
@@ -39,7 +46,9 @@
         }
       </div>
     }
-  } @error {
+  }
+  @error
+  {
     <div class="text-center">
       <p>Error loading gifts. Please try again later.</p>
     </div>

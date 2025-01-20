@@ -6,7 +6,7 @@ import {
   MatCardAvatar,
   MatCardContent,
   MatCardHeader,
-  MatCardImage, MatCardTitle
+  MatCardImage, MatCardSubtitle, MatCardTitle
 } from '@angular/material/card';
 import {MatChip} from '@angular/material/chips';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
@@ -20,6 +20,7 @@ import {Category, ProductGift} from '../../interfaces/product-gift';
 import {PeopleGiftService} from '../../services/peopleGift.service';
 import {Router} from '@angular/router';
 import {MessageDialogComponent} from '../../../shared/message-dialog/message-dialog.component';
+import {GiftAnimationComponent} from '../../components/gift-animation/gift-animation.component';
 
 @Component({
   selector: 'app-request-gift-page',
@@ -37,7 +38,9 @@ import {MessageDialogComponent} from '../../../shared/message-dialog/message-dia
     MatLabel,
     MatOption,
     MatProgressSpinner,
-    MatSelect
+    MatSelect,
+    GiftAnimationComponent,
+    MatCardSubtitle
   ],
   templateUrl: './request-gift-page.component.html',
   styleUrl: './request-gift-page.component.css'
