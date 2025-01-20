@@ -1,20 +1,20 @@
 <div class="max-w-7xl mx-auto px-4">
 
-  <div class="filters ">
-    <mat-form-field>
-    <mat-label class="font-bold">Category</mat-label>
-    <mat-select formControlName="category" class="w-full">
-      <mat-option>None</mat-option>
-      @for (category of categories; track category)
-      {
-        <mat-option [value]="category">{{ category }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+  <div class="filters mb-4 w-full max-w-md mx-auto">
+    <mat-form-field class="w-full">
+      <mat-label class="font-bold">Category</mat-label>
+      <mat-select (selectionChange)="updateCategory($event.value)" class="w-full">
+        <mat-option value="None">None</mat-option>
+        @for (category of categories; track category)
+        {
+          <mat-option [value]="category">{{ category }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
   </div>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-    @for ( gift of peopleGifts; track gift.id)
+    @for (gift of filteredGifts(); track gift.id)
     {
       <mat-card class="example-card" appearance="outlined">
         <mat-card-header>

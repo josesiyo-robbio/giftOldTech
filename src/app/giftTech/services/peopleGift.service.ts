@@ -69,8 +69,8 @@ export class PeopleGiftService
       Includes the original power adapter and a sturdy carrying case for added protection.
       Ideal for anyone looking to enjoy their Steam library or other PC games in a portable format.`,
       given : false,
-      category : Category.Videogames,
-      condition : Condition.LikeNew
+      category : Category.Audio,
+      condition : Condition.Broken
 
     },
     {

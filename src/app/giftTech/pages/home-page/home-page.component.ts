@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, computed, OnDestroy, OnInit, signal} from '@angular/core';
 import {
   MatCardActions,
   MatCardContent,
@@ -38,10 +38,28 @@ export class HomePageComponent implements OnInit, OnDestroy
 
   //CLASS PROPERTIES
   private peopleGiftSubscription = new Subscription();
-  public peopleGifts : ProductGift[] = [];
 
-  selectedCategory : string = '';
+  /*public peopleGifts : ProductGift[] = [];*/
+  peopleGifts = signal<ProductGift[]>([]);
+
+  /*selectedCategory : string = '';*/
+  selectedCategory = signal<string | null>(null);
+
   categories: Category[] = Object.values(Category);
+
+  //filtering
+  filteredGifts = computed(() => {
+    if(!this.selectedCategory() || this.selectedCategory() === 'None')
+    {
+      return this.peopleGifts();
+    }
+    return this.peopleGifts().filter(gift => gift.category === this.selectedCategory());
+  });
+
+  // Método para actualizar la categoría seleccionada
+  updateCategory(category: string) {
+    this.selectedCategory.set(category);
+  }
 
   //CONSTRUCTOR
   constructor(private peopleGiftService: PeopleGiftService)
@@ -49,25 +67,22 @@ export class HomePageComponent implements OnInit, OnDestroy
     this.peopleGiftSubscription = new Subscription();
   }
 
-  ngOnInit(): void
-  {
+  ngOnInit(): void {
     this.peopleGiftSubscription = this.peopleGiftService.getProducts().subscribe(
       (data) => {
         if (data && Array.isArray(data))
         {
-          this.peopleGifts = data;
-        }
-        else
-        {
+          this.peopleGifts.set(data);
+        } else {
           console.warn('No se encontraron productos válidos.');
-          this.peopleGifts = [];
+          this.peopleGifts.set([]);
         }
       },
       (error) => {
         console.error('Error al cargar productos:', error);
-        this.peopleGifts = [];
+        this.peopleGifts.set([]);
       }
-    )
+    );
   }
 
 
