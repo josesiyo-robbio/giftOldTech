@@ -10,6 +10,8 @@ import {
   MatCardHeader,
   MatCardImage, MatCardSubtitle, MatCardTitle
 } from '@angular/material/card';
+import {MatButton} from '@angular/material/button';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'giftTech-my-gifts-page',
@@ -21,7 +23,8 @@ import {
     MatCardHeader,
     MatCardImage,
     MatCardTitle,
-    MatCardSubtitle
+    MatCardSubtitle,
+    MatButton
   ],
   templateUrl: './my-gifts-page.component.html',
   styleUrl: './my-gifts-page.component.css'
@@ -33,7 +36,10 @@ export class MyGiftsPageComponent
   public myGifts : ProductGift[] = [];
 
   //CONSTRUCTOR
-  constructor(private myGiftsService: MyGiftsService)
+  constructor(
+    private myGiftsService: MyGiftsService,
+    private router: Router
+  )
   {
     this.myGiftSubscription = new Subscription();
   }
@@ -70,4 +76,12 @@ export class MyGiftsPageComponent
   }
 
 
+  toInboxRequest(gift : ProductGift) :void
+  {
+    this.myGiftsService.setProducts(gift);
+    this.router.navigate(['/inbox-request']);
+
+
+
+  }
 }

@@ -8,6 +8,7 @@ import {Observable, of} from 'rxjs';
 export class MyGiftsService
 {
   //CLASS PROPERTIES
+  private selectedGift : ProductGift  | null = null;
   private myGifts: ProductGift[] =
     [
       {
@@ -62,6 +63,11 @@ export class MyGiftsService
     }
   }
 
+
+  setProducts(products: ProductGift): void
+  {
+    this.selectedGift = products;
+  }
 
   public getProducts(): Observable<ProductGift[]>
   {
