@@ -1,0 +1,60 @@
+<div class="flex flex-col md:flex-row gap-4 p-4 max-w-7xl mx-auto">
+  <div class="w-full md:w-1/2">
+    <mat-card class="example-card" appearance="raised">
+
+      <mat-card-header>
+        <mat-card-title>Request List</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        @for (person of persons; track person.id)
+        {
+          <div class="flex items-center p-4 pb-2 bg-white shadow-md rounded-lg max-w-lg mx-auto">
+            <img class="w-14 h-14 rounded-full object-cover"  [src]="person.image" alt="Profile Picture">
+            <div class="ml-4 flex-1">
+              <h3 class="text-lg font-semibold">{{person.name}}</h3>
+              <p class="text-sm text-gray-600">{{person.phone}}</p>
+            </div>
+            <div class="flex gap-4">
+              <button class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none">
+                Accept
+              </button>
+              <button class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 focus:outline-none">
+                Reject
+              </button>
+            </div>
+          </div>
+          <div class="pt-3 pb-4"> </div>
+        }
+
+
+
+
+
+      </mat-card-content>
+
+      <mat-card-actions>
+        <!-- Actions here -->
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <!-- Columna de la Tarjeta del Dispositivo -->
+  <div class="w-full md:w-1/2">
+    <mat-card class="example-card" appearance="outlined">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>Device Name</mat-card-title>
+      </mat-card-header>
+      <p>Category: category</p>
+      <p>Condition: condition</p>
+      <img mat-card-image src="device-image-url.jpg" alt="Photo of device">
+      <mat-card-content>
+        <p>Description of the device</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <!-- Actions here -->
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

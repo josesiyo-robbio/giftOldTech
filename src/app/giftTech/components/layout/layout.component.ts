@@ -30,6 +30,7 @@ export class LayoutComponent
     {path : 'my-profile', loadComponent : () =>import('../../pages/my-profile-page/my-profile-page.component').then(m => m.MyProfilePageComponent),},
     {path : 'add-gift', loadComponent: ( ) => import('../../pages/add-gift-page/add-gift-page.component').then(m => m.AddGiftPageComponent),},
     {path : 'requests',loadComponent:() => import('../../pages/request-gift-page/request-gift-page.component').then(m => m.RequestGiftPageComponent),},
+    {path : 'inbox-request', loadComponent:() => import('../../pages/request-gift-receive-page/request-gift-receive-page.component').then(m => m.RequestGiftReceivePageComponent),},
     { path: '**', redirectTo: 'home' },
 
   ]
