@@ -8,7 +8,7 @@ import {
   MatCardAvatar,
   MatCardContent,
   MatCardHeader,
-  MatCardImage, MatCardTitle
+  MatCardImage, MatCardSubtitle, MatCardTitle
 } from '@angular/material/card';
 
 @Component({
@@ -20,7 +20,8 @@ import {
     MatCardContent,
     MatCardHeader,
     MatCardImage,
-    MatCardTitle
+    MatCardTitle,
+    MatCardSubtitle
   ],
   templateUrl: './my-gifts-page.component.html',
   styleUrl: './my-gifts-page.component.css'
