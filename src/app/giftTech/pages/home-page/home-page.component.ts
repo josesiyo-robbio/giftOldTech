@@ -1,4 +1,4 @@
-import {Component, computed, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, computed, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {
   MatCardActions,
   MatCardContent,
@@ -7,13 +7,19 @@ import {
   MatCardModule
 } from '@angular/material/card';
 import {MatButton} from '@angular/material/button';
-import {Subscription} from 'rxjs';
+import {Subscription, timer} from 'rxjs';
 import {PeopleGiftService} from '../../services/peopleGift.service';
 import {Category, ProductGift} from '../../interfaces/product-gift';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatOption} from '@angular/material/core';
 import {MatSelect} from '@angular/material/select';
 import {ReactiveFormsModule} from '@angular/forms';
+import {MatExpansionPanelActionRow} from '@angular/material/expansion';
+import {MatIcon} from '@angular/material/icon';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {MessageDialogComponent} from '../../../shared/message-dialog/message-dialog.component';
+import {LoadingDialogComponent} from '../../../shared/loading-dialog/loading-dialog.component';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'giftTech-home-page',
@@ -28,7 +34,9 @@ import {ReactiveFormsModule} from '@angular/forms';
     MatOption,
     MatSelect,
     ReactiveFormsModule,
-    MatFormField
+    MatFormField,
+    MatExpansionPanelActionRow,
+    MatIcon
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'
@@ -38,6 +46,8 @@ export class HomePageComponent implements OnInit, OnDestroy
 
   //CLASS PROPERTIES
   private peopleGiftSubscription = new Subscription();
+  public dialog :MatDialog = inject(MatDialog);
+  private dialogRef         :   MatDialogRef<LoadingDialogComponent, any> | undefined;
 
   /*public peopleGifts : ProductGift[] = [];*/
   peopleGifts = signal<ProductGift[]>([]);
@@ -56,13 +66,13 @@ export class HomePageComponent implements OnInit, OnDestroy
     return this.peopleGifts().filter(gift => gift.category === this.selectedCategory());
   });
 
-  // Método para actualizar la categoría seleccionada
+
   updateCategory(category: string) {
     this.selectedCategory.set(category);
   }
 
   //CONSTRUCTOR
-  constructor(private peopleGiftService: PeopleGiftService)
+  constructor(private peopleGiftService: PeopleGiftService, private router: Router)
   {
     this.peopleGiftSubscription = new Subscription();
   }
@@ -93,6 +103,56 @@ export class HomePageComponent implements OnInit, OnDestroy
       this.peopleGiftSubscription.unsubscribe();
     }
   }
+
+
+  claimGift()
+  {
+    this.dialog.open(MessageDialogComponent,
+      {
+        data: {
+          title: 'Send Request',
+          message: 'Are you sure you want to submit a request to claim the gift?',
+          onOk: () =>
+          {
+            this.openDialog();
+          }
+        },
+      });
+  }
+
+
+  public openDialog()
+  {
+    this.dialogRef = this.dialog.open(LoadingDialogComponent,
+      {
+        data: {
+          title: 'Sending request...',
+        },
+        disableClose: true,
+      });
+
+    timer(1000).subscribe(() => {
+      if (this.dialogRef)
+      {
+        this.dialogRef.close();
+      }
+    });
+
+    this.dialogRef.afterClosed().subscribe(result =>
+    {
+      this.dialog.open(MessageDialogComponent, {
+        data: {
+          title: 'Success!!!',
+          message: 'The request has been submitted, please stay tuned for the response.',
+          onOk: () =>
+          {
+            this.router.navigate(['/my-profile']);
+          }
+        },
+      });
+    });
+  }
+
 
 
 }
