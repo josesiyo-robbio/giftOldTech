@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {MatDrawer, MatDrawerContainer, MatSidenavModule} from '@angular/material/sidenav';
-import {MatToolbar, MatToolbarModule} from '@angular/material/toolbar';
-import {MatIcon, MatIconModule} from '@angular/material/icon';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatIconModule} from '@angular/material/icon';
 import {RouterOutlet, Routes} from '@angular/router';
 import {MatIconButton} from '@angular/material/button';
 import {SideMenuComponent} from '../side-menu/side-menu.component';
