@@ -27,7 +27,7 @@
               <mat-select formControlName="category">
                 @for (category of categories; track category)
                 {
-                  <mat-option [value]="category">{{ category }}</mat-option>
+                <mat-option [value]="category">{{ category }}</mat-option>
                 }
               </mat-select>
             </mat-form-field>
@@ -37,7 +37,7 @@
               <mat-select formControlName="condition">
                 @for (condition of conditions; track condition)
                 {
-                  <mat-option [value]="condition">{{ condition }}</mat-option>
+                <mat-option [value]="condition">{{ condition }}</mat-option>
                 }
               </mat-select>
             </mat-form-field>
@@ -65,7 +65,7 @@
         <mat-card-header></mat-card-header>
         <mat-card-content>
           @if (giftForm.value.image) {
-            <img [src]="giftForm.value.image" alt="product image">
+          <img [src]="giftForm.value.image" alt="product image">
           }
         </mat-card-content>
       </mat-card>

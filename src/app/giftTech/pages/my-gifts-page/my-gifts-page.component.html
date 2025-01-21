@@ -1,4 +1,4 @@
-<div class="max-w-7xl mx-auto px-4 " >
+<div class="max-w-7xl mx-auto px-4 ">
   <mat-card appearance="outlined">
     <mat-card-content>
       <p class="custom-text"> {{pageToolTip}}</p>
@@ -7,9 +7,10 @@
 
   <div class="box pb-3"></div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4  animate__animated animate__lightSpeedInRight" >
-  @for ( gift of paginatedGifts; track gift.id)
-  {
+  <div
+    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4  animate__animated animate__lightSpeedInRight">
+    @for ( gift of paginatedGifts; track gift.id)
+    {
     <mat-card class="example-card flex flex-col justify-between" appearance="outlined">
       <mat-card-header>
         <div mat-card-avatar class="example-header-image"></div>
@@ -27,32 +28,27 @@
       <mat-card-actions>
         @if (gift.given)
         {
-          <mat-chip>Claimed</mat-chip>
+        <mat-chip>Claimed</mat-chip>
         }
         @else
         {
-          <button mat-raised-button class="p-1"  (click)="toInboxRequest(gift)">Inbox Request</button>
+        <button mat-raised-button class="p-1" (click)="toInboxRequest(gift)">Inbox Request</button>
         }
 
       </mat-card-actions>
     </mat-card>
 
 
-  }
-  @empty
-  {
+    }
+    @empty
+    {
     <p>No items available.</p>
-  }
+    }
 
 
-</div>
+  </div>
   <div class="box pb-3"></div>
-  <mat-paginator
-    [length]="totalItems"
-    [pageSize]="pageSize"
-    [pageSizeOptions]="pageSizeOptions"
-    [pageIndex]="currentPage"
-    (page)="onPageChange($event)"
-    aria-label="Select page">
+  <mat-paginator [length]="totalItems" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+    [pageIndex]="currentPage" (page)="onPageChange($event)" aria-label="Select page">
   </mat-paginator>
 </div>
