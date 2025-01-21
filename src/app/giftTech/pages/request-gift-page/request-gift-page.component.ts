@@ -1,5 +1,14 @@
-import {Component, computed, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import {MatButton} from '@angular/material/button';
+import {Component, computed, inject, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
+import {Subscription, timer} from 'rxjs';
+import {Router} from '@angular/router';
+
+import {LoadingDialogComponent} from '../../../shared/loading-dialog/loading-dialog.component';
+import {Category, ProductGift} from '../../interfaces/product-gift';
+import {PeopleGiftService} from '../../services/peopleGift.service';
+import {MessageDialogComponent} from '../../../shared/message-dialog/message-dialog.component';
+import {GiftAnimationComponent} from '../../components/gift-animation/gift-animation.component';
+
+//MATERIAL YOU
 import {
   MatCard,
   MatCardActions,
@@ -8,20 +17,11 @@ import {
   MatCardHeader,
   MatCardImage, MatCardSubtitle, MatCardTitle
 } from '@angular/material/card';
-import {MatChip} from '@angular/material/chips';
-import {MatFormField, MatLabel} from '@angular/material/form-field';
-import {MatOption} from '@angular/material/core';
-import {MatProgressSpinner} from '@angular/material/progress-spinner';
-import {MatSelect} from '@angular/material/select';
-import {Subscription, timer} from 'rxjs';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {LoadingDialogComponent} from '../../../shared/loading-dialog/loading-dialog.component';
-import {Category, ProductGift} from '../../interfaces/product-gift';
-import {PeopleGiftService} from '../../services/peopleGift.service';
-import {Router} from '@angular/router';
-import {MessageDialogComponent} from '../../../shared/message-dialog/message-dialog.component';
-import {GiftAnimationComponent} from '../../components/gift-animation/gift-animation.component';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {MatButton} from '@angular/material/button';
+import {MatChip} from '@angular/material/chips';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-request-gift-page',
@@ -35,11 +35,6 @@ import {MatPaginator, PageEvent} from '@angular/material/paginator';
     MatCardImage,
     MatCardTitle,
     MatChip,
-    MatFormField,
-    MatLabel,
-    MatOption,
-    MatProgressSpinner,
-    MatSelect,
     GiftAnimationComponent,
     MatCardSubtitle,
     MatPaginator
@@ -50,39 +45,29 @@ import {MatPaginator, PageEvent} from '@angular/material/paginator';
 export class RequestGiftPageComponent implements OnInit, OnDestroy
 {
   //CLASS PROPERTIES
-  private peopleGiftSubscription = new Subscription();
-  public dialog :MatDialog = inject(MatDialog);
-  private dialogRef         :   MatDialogRef<LoadingDialogComponent, any> | undefined;
-  isLoading = signal<boolean>(true);
-  public  pageToolTip : string = `On this page, you can see the requests you've sent to receive devices.
-   Here, you can manage your requests and track the products you're interested in. If a request is
+  private   peopleGiftSubscription  :   Subscription = new Subscription();
+  public    dialog                  :   MatDialog = inject(MatDialog);
+  private   dialogRef               :   MatDialogRef<LoadingDialogComponent, any> | undefined;
+  public    isLoading               :   WritableSignal<boolean> = signal<boolean>(true);
+  public    pageToolTip             :   string = `On this page, you can see the requests you've sent to receive devices.
+    Here, you can manage your requests and track the products you're interested in. If a request is
     accepted, you'll be able to take the device and give it a new life.`;
 
+  public pageSize           : number = 5;
+  public pageSizeOptions    : number[] = [5, 10, 20];
+  public currentPage        : number =  0;
+  public totalItems         : number =  0;
 
-  public pageSize: number = 5;
-  public pageSizeOptions: number[] = [5, 10, 20];
-  currentPage: number = 0;
-  public totalItems: number =0;
-
-
-  /*public peopleGifts : ProductGift[] = [];*/
-  peopleGifts = signal<ProductGift[]>([]);
-
-  /*selectedCategory : string = '';*/
-  selectedCategory = signal<string | null>(null);
-
-  categories: Category[] = Object.values(Category);
+  private peopleGifts :WritableSignal<ProductGift[]> = signal<ProductGift[]>([]);
+  private selectedCategory : WritableSignal<string | null> = signal<string | null>(null);
+  private categories: Category[] = Object.values(Category);
 
   //filtering
   filteredGifts = computed(() => {
-
     return this.peopleGifts().filter(gift => gift.claimed);
   });
 
 
-  updateCategory(category: string) {
-    this.selectedCategory.set(category);
-  }
 
   //CONSTRUCTOR
   constructor(private peopleGiftService: PeopleGiftService, private router: Router)
@@ -90,47 +75,33 @@ export class RequestGiftPageComponent implements OnInit, OnDestroy
     this.peopleGiftSubscription = new Subscription();
   }
 
-  ngOnInit(): void {
-    this.isLoading.set(true);
-    this.peopleGiftSubscription = this.peopleGiftService.getProducts().subscribe({
-      next: (data) => {
-        if (data && Array.isArray(data))
-        {
-          this.peopleGifts.set(data);
-          this.totalItems = data.length;
-        }
-        else {
-          console.warn('No se encontraron productos válidos.');
-          this.peopleGifts.set([]);
-        }
-        this.isLoading.set(false);
-      },
-      error: (error) => {
-        console.error('Error al cargar productos:', error);
-        this.peopleGifts.set([]);
-        this.isLoading.set(false);
-      }
-    });
-  }
 
 
-  ngOnDestroy(): void
+  //GETTERS & SETTERS
+  get paginatedGifts(): ProductGift[]
   {
-    if (this.peopleGiftSubscription)
-    {
-      this.peopleGiftSubscription.unsubscribe();
-    }
+    const filtered : ProductGift[] = this.filteredGifts();
+    const start : number = this.currentPage * this.pageSize;
+    return filtered.slice(start, start + this.pageSize);
   }
 
 
-  claimGift(id : string)
+
+  //METHODS
+  updateCategory(category: string): void
+  {
+    this.selectedCategory.set(category);
+  }
+
+
+  claimGift(id : string): void
   {
     this.dialog.open(MessageDialogComponent,
       {
         data: {
           title: 'Send Request',
           message: 'Are you sure you want to submit a request to claim the gift?',
-          onOk: () =>
+          onOk: () : void =>
           {
             this.openDialog(id);
           }
@@ -180,16 +151,46 @@ export class RequestGiftPageComponent implements OnInit, OnDestroy
   }
 
 
-
-  onPageChange(event: PageEvent) {
+  onPageChange(event: PageEvent) : void
+  {
     this.currentPage = event.pageIndex;
     this.pageSize = event.pageSize;
   }
 
-  get paginatedGifts(): ProductGift[] {
-    const filtered = this.filteredGifts();  // Filtramos primero
-    const start = this.currentPage * this.pageSize;
-    return filtered.slice(start, start + this.pageSize);  // Después aplicamos la paginación
+
+
+  //LIFECYCLE HOOKS
+  ngOnInit(): void
+  {
+    this.isLoading.set(true);
+    this.peopleGiftSubscription = this.peopleGiftService.getProducts().subscribe({
+      next: (data : ProductGift[]) : void => {
+        if (data && Array.isArray(data))
+        {
+          this.peopleGifts.set(data);
+          this.totalItems = data.length;
+        }
+        else
+        {
+          this.peopleGifts.set([]);
+        }
+        this.isLoading.set(false);
+      },
+      error: (error) : void =>
+      {
+        this.peopleGifts.set([]);
+        this.isLoading.set(false);
+      }
+    });
+  }
+
+
+  ngOnDestroy(): void
+  {
+    if (this.peopleGiftSubscription)
+    {
+      this.peopleGiftSubscription.unsubscribe();
+    }
   }
 
 }

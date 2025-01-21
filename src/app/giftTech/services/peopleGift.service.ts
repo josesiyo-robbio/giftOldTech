@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import {Category, Condition, ProductGift} from '../interfaces/product-gift';
 import {delay, Observable, of} from 'rxjs';
 
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -111,7 +113,7 @@ export class PeopleGiftService
   //METHODS
   private loadProducts()
   {
-    const storedProducts = localStorage.getItem('peopleGifts');
+    const storedProducts: string | null = localStorage.getItem('peopleGifts');
     if(!storedProducts)
     {
       localStorage.setItem('peopleGifts', JSON.stringify([this.gifts]));
@@ -119,18 +121,25 @@ export class PeopleGiftService
   }
 
 
-  public getProducts(): Observable<ProductGift[]> {
-    const storedProducts = localStorage.getItem('peopleGifts');
-    try {
+  public getProducts(): Observable<ProductGift[]>
+  {
+    const storedProducts : string | null = localStorage.getItem('peopleGifts');
+    try
+    {
       const parsedProducts = storedProducts ? JSON.parse(storedProducts) : [];
       return of(Array.isArray(parsedProducts[0]) ? parsedProducts[0] : parsedProducts).pipe(
-        delay(2000) // Retraso de 3 segundos
+        delay(2000)
       );
-    } catch (error) {
+    }
+    catch (error)
+    {
       console.error('Error al parsear los productos desde localStorage:', error);
-      return of([]).pipe(delay(2000)); // Simula un retraso también en caso de error
+      return of([]).pipe(delay(2000));
     }
   }
 
+
+
+  //LIFECYCLE HOOKS (NA)
 
 }

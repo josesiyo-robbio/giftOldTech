@@ -1,15 +1,26 @@
 import { Injectable } from '@angular/core';
 import {ProductGift} from '../interfaces/product-gift';
 
+
+
 @Injectable({
   providedIn: 'root'
 })
 export class MyGiftStateService
 {
+  //CLASS PROPERTIES
   private selectedGift: ProductGift | null = null;
+
+
+
+  //CONSTRUCTOR
   constructor() { }
 
-  setGift(gift: ProductGift): void {
+
+
+  //GETTERS & SETTERS
+  setGift(gift: ProductGift): void
+  {
     this.selectedGift = gift;
   }
 
@@ -17,4 +28,13 @@ export class MyGiftStateService
   {
     return this.selectedGift;
   }
+
+
+
+  //METHODS (NA)
+
+
+
+  //LIFECYCLE HOOKS (NA)
+
 }

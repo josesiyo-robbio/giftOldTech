@@ -15,22 +15,22 @@ export interface ProductGift
 
 export enum Category
 {
-  Phones = 'Phones',
-  Videogames = 'Videogames',
-  Laptops = 'Laptops',
-  Accessories = 'Accessories',
-  Tablets = 'Tablets',
-  Cameras = 'Cameras',
-  Smartwatches = 'Smartwatches',
-  Audio = 'Audio',
+  Phones        = 'Phones',
+  Videogames    = 'Videogames',
+  Laptops       = 'Laptops',
+  Accessories   = 'Accessories',
+  Tablets       = 'Tablets',
+  Cameras       = 'Cameras',
+  Smartwatches  = 'Smartwatches',
+  Audio         = 'Audio',
 }
 
 export enum Condition
 {
-  New = 'New',
-  Used = 'Used',
-  Refurbished = 'Refurbished',
-  Broken = 'Broken',
-  LikeNew = 'Like New',
+  New           = 'New',
+  Used          = 'Used',
+  Refurbished   = 'Refurbished',
+  Broken        = 'Broken',
+  LikeNew       = 'Like New',
 }
 

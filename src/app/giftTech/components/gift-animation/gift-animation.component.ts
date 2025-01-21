@@ -1,19 +1,14 @@
 import { Component } from '@angular/core';
-
-
-
-import {AnimationOptions, LottieComponent, provideCacheableAnimationLoader, provideLottieOptions} from 'ngx-lottie';
-import player, {AnimationItem} from 'lottie-web';
+import {AnimationOptions, LottieComponent, provideLottieOptions} from 'ngx-lottie';
+import player, {AnimationItem, LottiePlayer} from 'lottie-web';
 
 @Component({
   selector: 'giftTech-gift-animation',
-  imports: [
-    LottieComponent
-  ],
+  imports: [ LottieComponent ],
   templateUrl: './gift-animation.component.html',
   styleUrl: './gift-animation.component.css',
   providers: [   provideLottieOptions({
-    player: () => player,
+    player: () : LottiePlayer => player,
   }),]
 })
 export class GiftAnimationComponent

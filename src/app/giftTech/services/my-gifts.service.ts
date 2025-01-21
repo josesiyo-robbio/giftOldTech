@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {Category, Condition, ProductGift} from '../interfaces/product-gift';
 import {Observable, of} from 'rxjs';
 
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -64,8 +66,6 @@ export class MyGiftsService
   }
 
 
-
-
   public getProducts(): Observable<ProductGift[]>
   {
     const storedProducts = localStorage.getItem('myGifts');
@@ -80,4 +80,9 @@ export class MyGiftsService
       return of([]);
     }
   }
+
+
+
+  //LIFECYCLE HOOKS (NA)
+
 }

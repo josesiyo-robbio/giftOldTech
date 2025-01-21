@@ -1,4 +1,14 @@
-import {Component, computed, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, computed, inject, OnDestroy, OnInit, Signal, signal, WritableSignal} from '@angular/core';
+import {Subscription, timer} from 'rxjs';
+import {Router} from '@angular/router';
+
+import {PeopleGiftService} from '../../services/peopleGift.service';
+import {Category, ProductGift} from '../../interfaces/product-gift';
+import {MessageDialogComponent} from '../../../shared/message-dialog/message-dialog.component';
+import {LoadingDialogComponent} from '../../../shared/loading-dialog/loading-dialog.component';
+import {GiftAnimationComponent} from '../../components/gift-animation/gift-animation.component';
+
+//MATERIAL YOU
 import {
   MatCardActions,
   MatCardContent,
@@ -6,26 +16,15 @@ import {
   MatCardImage,
   MatCardModule
 } from '@angular/material/card';
-import {MatButton} from '@angular/material/button';
-import {Subscription, timer} from 'rxjs';
-import {PeopleGiftService} from '../../services/peopleGift.service';
-import {Category, ProductGift} from '../../interfaces/product-gift';
-import {MatFormField, MatLabel} from '@angular/material/form-field';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {MatOption} from '@angular/material/core';
 import {MatSelect} from '@angular/material/select';
+import {MatButton} from '@angular/material/button';
+import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {ReactiveFormsModule} from '@angular/forms';
-import {MatExpansionPanelActionRow} from '@angular/material/expansion';
-import {MatIcon} from '@angular/material/icon';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {MessageDialogComponent} from '../../../shared/message-dialog/message-dialog.component';
-import {LoadingDialogComponent} from '../../../shared/loading-dialog/loading-dialog.component';
-import {Router} from '@angular/router';
-import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {MatChip} from '@angular/material/chips';
-import {GiftAnimationComponent} from '../../components/gift-animation/gift-animation.component';
-import {AnimationOptions, LottieComponent} from 'ngx-lottie';
-import {AnimationItem} from 'lottie-web';
-import {MatPaginator, PageEvent} from '@angular/material/paginator';
+
 
 @Component({
   selector: 'giftTech-home-page',
@@ -41,12 +40,8 @@ import {MatPaginator, PageEvent} from '@angular/material/paginator';
     MatSelect,
     ReactiveFormsModule,
     MatFormField,
-    MatExpansionPanelActionRow,
-    MatIcon,
-    MatProgressSpinner,
     MatChip,
     GiftAnimationComponent,
-    LottieComponent,
     MatPaginator
   ],
   templateUrl: './home-page.component.html',
@@ -62,24 +57,38 @@ export class HomePageComponent implements OnInit, OnDestroy
   private peopleGiftSubscription = new Subscription();
   public dialog :MatDialog = inject(MatDialog);
   private dialogRef         :   MatDialogRef<LoadingDialogComponent, any> | undefined;
-  isLoading = signal<boolean>(true);
-  public pageSize: number = 6; // Define the number of cards per page
-  public pageIndex: number = 0; // Current page index
+  isLoading : WritableSignal<boolean> = signal<boolean>(true);
+  public pageSize: number = 6;
+  public pageIndex: number = 0;
   public pageSizeOptions: number[] = [5, 10, 20];
   currentPage: number = 0;
 
-
-
-  /*public peopleGifts : ProductGift[] = [];*/
-  peopleGifts = signal<ProductGift[]>([]);
-
-  /*selectedCategory : string = '';*/
-  selectedCategory = signal<string | null>(null);
-
+  peopleGifts : WritableSignal<ProductGift[]> = signal<ProductGift[]>([]);
+  selectedCategory : WritableSignal<string | null> = signal<string | null>(null);
   categories: Category[] = Object.values(Category);
 
-  //filtering
-  filteredGifts = computed(() => {
+
+
+  //CONSTRUCTOR
+  constructor(private peopleGiftService: PeopleGiftService, private router: Router)
+  {
+    this.peopleGiftSubscription = new Subscription();
+  }
+
+
+
+  //GETTERS & SETTERS
+  get paginatedGifts(): ProductGift[]
+  {
+    const filtered : ProductGift[] = this.filteredGifts();
+    const start : number = this.currentPage * this.pageSize;
+    return filtered.slice(start, start + this.pageSize);
+  }
+
+
+
+  //METHODS
+  filteredGifts : Signal<ProductGift[]>   = computed(() : ProductGift[] => {
     if(!this.selectedCategory() || this.selectedCategory() === 'None')
     {
       return this.peopleGifts();
@@ -88,56 +97,20 @@ export class HomePageComponent implements OnInit, OnDestroy
   });
 
 
-  updateCategory(category: string) {
+  updateCategory(category: string) : void
+  {
     this.selectedCategory.set(category);
   }
 
-  //CONSTRUCTOR
 
-
-  constructor(private peopleGiftService: PeopleGiftService, private router: Router)
-  {
-    this.peopleGiftSubscription = new Subscription();
-  }
-
-  ngOnInit(): void {
-    this.isLoading.set(true);
-    this.peopleGiftSubscription = this.peopleGiftService.getProducts().subscribe({
-      next: (data) => {
-        if (data && Array.isArray(data)) {
-          this.peopleGifts.set(data);
-        } else {
-          console.warn('No se encontraron productos válidos.');
-          this.peopleGifts.set([]);
-        }
-        this.isLoading.set(false);
-      },
-      error: (error) => {
-        console.error('Error al cargar productos:', error);
-        this.peopleGifts.set([]);
-        this.isLoading.set(false);
-      }
-    });
-  }
-
-
-  ngOnDestroy(): void
-  {
-    if (this.peopleGiftSubscription)
-    {
-      this.peopleGiftSubscription.unsubscribe();
-    }
-  }
-
-
-  claimGift(id : string)
+  claimGift(id : string) : void
   {
     this.dialog.open(MessageDialogComponent,
       {
         data: {
           title: 'Send Request',
           message: 'Are you sure you want to submit a request to claim the gift?',
-          onOk: () =>
+          onOk: () : void =>
           {
             this.openDialog(id);
           }
@@ -146,7 +119,7 @@ export class HomePageComponent implements OnInit, OnDestroy
   }
 
 
-  public openDialog(gifttId: string)
+  public openDialog(gifttId: string) : void
   {
     const newState: boolean = true;
     const gifts  = JSON.parse(localStorage.getItem('peopleGifts') || '[]');
@@ -164,7 +137,7 @@ export class HomePageComponent implements OnInit, OnDestroy
         disableClose: true,
       });
 
-    timer(1000).subscribe(() => {
+    timer(1000).subscribe(() : void => {
       if (this.dialogRef)
       {
         this.dialogRef.close();
@@ -177,7 +150,7 @@ export class HomePageComponent implements OnInit, OnDestroy
         data: {
           title: 'Success!!!',
           message: 'The request has been submitted, please stay tuned for the response.',
-          onOk: () =>
+          onOk: () : void =>
           {
             this.router.navigate(['/requests']);
           }
@@ -186,14 +159,46 @@ export class HomePageComponent implements OnInit, OnDestroy
     });
   }
 
-  onPageChange(event: PageEvent) {
+
+  onPageChange(event: PageEvent) : void
+  {
     this.currentPage = event.pageIndex;
     this.pageSize = event.pageSize;
   }
 
-  get paginatedGifts(): ProductGift[] {
-    const filtered = this.filteredGifts();  // Filtramos primero
-    const start = this.currentPage * this.pageSize;
-    return filtered.slice(start, start + this.pageSize);  // Después aplicamos la paginación
+
+
+  //LIFECYCLE HOOKS
+  ngOnInit(): void
+  {
+    this.isLoading.set(true);
+    this.peopleGiftSubscription = this.peopleGiftService.getProducts().subscribe({
+      next: (data: ProductGift[]) : void => {
+        if (data && Array.isArray(data))
+        {
+          this.peopleGifts.set(data);
+        }
+        else
+        {
+          this.peopleGifts.set([]);
+        }
+        this.isLoading.set(false);
+      },
+      error: (error) : void => {
+        console.error('Error al cargar productos:', error);
+        this.peopleGifts.set([]);
+        this.isLoading.set(false);
+      }
+    });
   }
+
+
+  ngOnDestroy(): void
+  {
+    if (this.peopleGiftSubscription)
+    {
+      this.peopleGiftSubscription.unsubscribe();
+    }
+  }
+
 }

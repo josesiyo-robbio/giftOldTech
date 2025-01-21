@@ -1,15 +1,18 @@
 import {Component, inject} from '@angular/core';
-import {MatCard, MatCardContent, MatCardHeader} from '@angular/material/card';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {MatFormField, MatFormFieldModule} from '@angular/material/form-field';
-import {MatInput} from '@angular/material/input';
-import {MatButton} from '@angular/material/button';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {Router} from '@angular/router';
+
 import {Category, Condition, ProductGift} from '../../interfaces/product-gift';
-import {MatOption, MatSelect} from '@angular/material/select';
 import {LoadingDialogComponent} from '../../../shared/loading-dialog/loading-dialog.component';
 import {MessageDialogComponent} from '../../../shared/message-dialog/message-dialog.component';
+
+//MATERIAL YOU
+import {MatInput} from '@angular/material/input';
+import {MatButton} from '@angular/material/button';
+import {MatOption, MatSelect} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatCard, MatCardContent, MatCardHeader} from '@angular/material/card';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'giftTech-add-gift-page',
@@ -32,17 +35,18 @@ export class AddGiftPageComponent
 {
   //CLASS PROPERTIES
   public  pageToolTip : string = `On this page, you can add a device you'd like to gift.
-   Simply fill out the form with the product details, such as its name, description,
+    Simply fill out the form with the product details, such as its name, description,
     condition, and category. Once you submit the form, your device will be available
-     for others to take and give it a second life.`;
-    giftForm: FormGroup;
-  selectedCategory : string = '';
-  categories: Category[] = Object.values(Category);
+    for others to take and give it a second life.`;
 
-  selectedCondition: string = '';
-  conditions: Condition[] = Object.values(Condition);
-  private dialogRef: MatDialogRef<LoadingDialogComponent, any> | undefined;
+  public giftForm: FormGroup;
+  public selectedCategory : string = '';
+  public categories: Category[] = Object.values(Category);
+  public selectedCondition: string = '';
+  public conditions: Condition[] = Object.values(Condition);
+  public dialogRef: MatDialogRef<LoadingDialogComponent, any> | undefined;
   public dialog :MatDialog = inject(MatDialog);
+  protected readonly Category = Category;
 
 
 
@@ -50,11 +54,11 @@ export class AddGiftPageComponent
   constructor(private fb: FormBuilder, private router: Router,)
   {
     this.giftForm = this.fb.group({
-      name        :   ['', Validators.required],
-      image       :   ['', Validators.required],
-      description :   ['', Validators.required],
-      category       :   ['', Validators.required],
-      condition:   ['', Validators.required],
+      name            :   ['', Validators.required],
+      image           :   ['', Validators.required],
+      description     :   ['', Validators.required],
+      category        :   ['', Validators.required],
+      condition       :   ['', Validators.required],
     });
   }
 
@@ -100,7 +104,7 @@ export class AddGiftPageComponent
 
     this.giftForm.reset();
 
-  this.dialogRef = this.dialog.open(MessageDialogComponent,
+    this.dialogRef = this.dialog.open(MessageDialogComponent,
       {
         data: {
           title: 'Success',
@@ -111,7 +115,6 @@ export class AddGiftPageComponent
 
   }
 
-
   private generateId(): string
   {
     return crypto.randomUUID();
@@ -121,6 +124,4 @@ export class AddGiftPageComponent
 
   //LIFECYCLE HOOKS (NA)
 
-
-  protected readonly Category = Category;
 }
