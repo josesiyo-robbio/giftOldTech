@@ -42,8 +42,9 @@ import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 export class RequestGiftReceivePageComponent implements OnInit
 {
   //CLASS PROPERTIES
-  public  gift        :   ProductGift | null = null;
   private dialogRef   :   MatDialogRef<LoadingDialogComponent, any> | undefined;
+
+  public  gift        :   ProductGift | null = null;
   public  dialog      :   MatDialog = inject(MatDialog);
   public persons : Person[] = [
     {

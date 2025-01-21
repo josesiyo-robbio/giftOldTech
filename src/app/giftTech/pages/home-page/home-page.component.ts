@@ -54,18 +54,18 @@ export class HomePageComponent implements OnInit, OnDestroy
   public  pageToolTip : string = `On this page, you can explore the devices available for gifting. Here, you'll find
    a list of products that others have made available to give them a second life. If you see something you're interested
     in, you can easily take it. Browse through the options and find the device you need or one that could be useful to you.`;
-  private peopleGiftSubscription = new Subscription();
   public dialog :MatDialog = inject(MatDialog);
-  private dialogRef         :   MatDialogRef<LoadingDialogComponent, any> | undefined;
-  isLoading : WritableSignal<boolean> = signal<boolean>(true);
+  public isLoading : WritableSignal<boolean> = signal<boolean>(true);
   public pageSize: number = 6;
   public pageIndex: number = 0;
   public pageSizeOptions: number[] = [5, 10, 20];
-  currentPage: number = 0;
+  public categories: Category[] = Object.values(Category);
 
-  peopleGifts : WritableSignal<ProductGift[]> = signal<ProductGift[]>([]);
-  selectedCategory : WritableSignal<string | null> = signal<string | null>(null);
-  categories: Category[] = Object.values(Category);
+  private currentPage: number = 0;
+  private peopleGifts : WritableSignal<ProductGift[]> = signal<ProductGift[]>([]);
+  private selectedCategory : WritableSignal<string | null> = signal<string | null>(null);
+  private dialogRef         :   MatDialogRef<LoadingDialogComponent, any> | undefined;
+  private peopleGiftSubscription = new Subscription();
 
 
 

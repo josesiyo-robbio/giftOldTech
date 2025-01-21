@@ -45,22 +45,21 @@ import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 export class RequestGiftPageComponent implements OnInit, OnDestroy
 {
   //CLASS PROPERTIES
-  private   peopleGiftSubscription  :   Subscription = new Subscription();
   public    dialog                  :   MatDialog = inject(MatDialog);
-  private   dialogRef               :   MatDialogRef<LoadingDialogComponent, any> | undefined;
   public    isLoading               :   WritableSignal<boolean> = signal<boolean>(true);
   public    pageToolTip             :   string = `On this page, you can see the requests you've sent to receive devices.
     Here, you can manage your requests and track the products you're interested in. If a request is
     accepted, you'll be able to take the device and give it a new life.`;
-
   public pageSize           : number = 5;
   public pageSizeOptions    : number[] = [5, 10, 20];
   public currentPage        : number =  0;
   public totalItems         : number =  0;
 
-  private peopleGifts :WritableSignal<ProductGift[]> = signal<ProductGift[]>([]);
-  private selectedCategory : WritableSignal<string | null> = signal<string | null>(null);
-  private categories: Category[] = Object.values(Category);
+  private   peopleGifts :WritableSignal<ProductGift[]> = signal<ProductGift[]>([]);
+  private   selectedCategory : WritableSignal<string | null> = signal<string | null>(null);
+  private   categories: Category[] = Object.values(Category);
+  private   peopleGiftSubscription  :   Subscription = new Subscription();
+  private   dialogRef               :   MatDialogRef<LoadingDialogComponent, any> | undefined;
 
   //filtering
   filteredGifts = computed(() => {

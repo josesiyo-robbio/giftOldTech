@@ -50,7 +50,7 @@ export class MyGiftsPageComponent implements OnInit, OnDestroy
 
   public pageSize: number = 5
   public pageSizeOptions: number[] = [5, 10, 20];
-  currentPage: number = 0;
+  public currentPage: number = 0;
   public totalItems: number =0;
 
 
